@@ -72,91 +72,78 @@ public class DBUtil {
 				int m = 0;
 				//check 0 records
 				if(!answer.isEmpty()){
-					System.out.println("(1) Export to file \n(2) Output to console");
-					m = s.nextInt();
-					
-					while(m != 1 && m != 2){
-						
-						System.out.println("Incorrect option. (1) Export to file \n(2) Output to console");
+						System.out.println("(1) Export to file \n(2) Output to console");
 						m = s.nextInt();
-					
-					}
-					
-					
-					
-					if(m == 1){
-						File root = new File(Paths.get(".").toAbsolutePath().normalize().toString());
-
-						while(!root.getName().equals("Rachael")){
-						 	root = root.getParentFile();
-						}
-						String path = root.getAbsolutePath()+"/Patients/";
-						try{
-							if(!(new File(path)).isDirectory())
-							{
-								
-								boolean success = (new File(path)).mkdir();
-								if (success) {
-								//	System.out.println("Directory: Patients created");
-								}    
-	
-							}
-						}
-						catch (Exception e){//Catch exception if any
-							System.err.println("Error: " + e.getMessage());
-						} 
 						
-						PrintWriter writer=null;
-						try {
-							writer = new PrintWriter(new File(path+"output.txt"));
-							for(String header: answer.get(0).keySet()){
-								writer.print(header + "\t");
-							}
-							writer.print("\n");
-							for(LinkedHashMap<String, String> e : answer){
-								
-								
-								for(String key : e.keySet()){
-
-									writer.print(e.get(key) + "\t\t");
-								}
-								writer.println("\n");
+						while(m != 1 && m != 2){
 							
-							}
-						} catch (FileNotFoundException e) {
-							System.out.println("File not found");
-						}
-						writer.close();
-
+							System.out.println("Incorrect option. (1) Export to file \n(2) Output to console");
+							m = s.nextInt();
 						
-						
-					}
-					else{
-					
-						for(String header: answer.get(0).keySet()){
-							System.out.print(header + "\t");
 						}
-						System.out.println();
 						int count = 0;
-						for(LinkedHashMap<String, String> e : answer){
+						if(m == 2){
 							
-							if(count > 9){
-								break;
-							}
-							for(String key : e.keySet()){
-								System.out.print(e.get(key) + "\t\t");
+							for(String header: answer.get(0).keySet()){
+								System.out.print(header + "\t");
 							}
 							System.out.println();
-							count++;
+							
+							for(LinkedHashMap<String, String> e : answer){
+								
+								if(count > 9){
+									break;
+								}
+								for(String key : e.keySet()){
+									System.out.print(e.get(key) + "\t\t");
+								}
+								System.out.println();
+								count++;
+							}
 						}
-					}
+						
+						if(count > 9 || m == 1){
+							File root = new File(Paths.get(".").toAbsolutePath().normalize().toString());
+	
+							String path = root.getAbsolutePath()+"/";
+							
+							PrintWriter writer=null;
+							try {
+								writer = new PrintWriter(new File(path+"output.txt"));
+								for(String header: answer.get(0).keySet()){
+									writer.print(header + "\t");
+								}
+								writer.print("\n");
+								for(LinkedHashMap<String, String> e : answer){
+									
+									
+									for(String key : e.keySet()){
+	
+										writer.print(e.get(key) + "\t\t");
+									}
+									writer.print("\n");
+								
+								}
+							} catch (FileNotFoundException e) {
+								System.out.println("File not found");
+							}
+							writer.close();
+							
+							System.out.println("Output written to text file with name 'output.txt'");
+							
+						}
+						
+						
+						
 					
 				}
 				else{
 					System.out.println("No records found");
 				}
 				
+				
 			}
+			//need tp add verification of the number of rows
 			else if(command.compareTo("insert ") == 0){
 				System.out.println(DBUtility.insert(query) + " row(s) inserted");
 			}
